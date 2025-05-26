@@ -1,10 +1,10 @@
 {
   "name": "hyppot",
-  "version": "0.0.1.21",
+  "version": "0.2.0.0",
   "description": "Hyppot SDK in Javascript/Typescript",
   "author": "Hyppot (https://hyppot.com)",
   "license": "Apache-2.0",
-  "repository": "UNKNOWN",
+  "repository": "https://github.com/hyppot/hyppot-js",
   "type": "module",
   "source": "src/index.ts",
   "exports": {
@@ -18,8 +18,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "microbundle",
-    "dev": "microbundle watch",
-    "deploy": "TODO (push to npm)"
+    "dev": "microbundle watch"
   },
   "engines": {
     "node": ">=10"
