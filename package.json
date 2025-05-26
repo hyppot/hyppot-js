@@ -1,10 +1,11 @@
 {
   "name": "hyppot",
-  "version": "0.2.0.0",
+  "version": "0.2.0",
   "description": "Hyppot SDK in Javascript/Typescript",
   "author": "Hyppot (https://hyppot.com)",
   "license": "Apache-2.0",
   "repository": "https://github.com/hyppot/hyppot-js",
+  "homepage": "https://docs.hyppot.com",
   "type": "module",
   "source": "src/index.ts",
   "exports": {
