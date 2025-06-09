@@ -8,6 +8,7 @@ export interface IExperimentDefinition
 	variables: IVariableDefinition[];
 	variants: IVariantDefinition[];
 	trackedConversions: ITrackedConversion[];
+	baselineVariantId: string;
 	isActive: boolean;
 }
 export interface IVariableDefinition
