@@ -13,7 +13,7 @@ export function configureHyppot(configure: (config: HyppotConfiguration) => void
   configure(config);
   const tracker = new ExperimentTracker(new TrackingApiClient(config.prefix));
   return {
-    resolver: new ExperimentationResolver(new SessionStorageExperimentStatusAccessor(config.prefix, config.experimentStatusKey), tracker),
+    resolver: new ExperimentationResolver(new SessionStorageExperimentStatusAccessor(config.prefix, config.experimentStatusKey), tracker, config),
     tracker: tracker
   };
 }
