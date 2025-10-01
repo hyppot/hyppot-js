@@ -42,9 +42,9 @@ export interface ITrackedConversion
 	conversionType: IConversionType;
 	requiredMetrics: IVariableInstance[];
 }
-export interface IExperimentVariantInstance
+export interface IVariantInstance
 {
-	experiment: string;
+	rollout: string;
 	variant: string;
 	variables: IVariableInstance[];
 }
