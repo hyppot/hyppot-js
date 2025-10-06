@@ -1,9 +1,8 @@
 import { IExperimentImpressionModel, IExperimentConversionModel } from "../dtos";
-import { IExperimentTracker } from "./IExperimentTracker";
+import { IRolloutTracker } from "./IExperimentTracker";
 import { TrackingApiClient } from "./TrackingApiClient";
 
-
-export class ExperimentTracker implements IExperimentTracker {
+export class RolloutTracker implements IRolloutTracker {
   constructor(private readonly apiClient: TrackingApiClient) {
   }
 

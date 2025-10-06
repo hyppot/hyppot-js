@@ -1,9 +1,9 @@
 import { ExperimentApiClient } from "./ExperimentApiClient";
-import { IExperimentStatusAccessor } from "./IExperimentStatusAccessor";
-import { ICachedExperimentsStatus } from "./ICachedExperimentsStatus";
-import { IExperimentVariantInstance } from "../dtos";
+import { IRolloutStatusAccessor } from "./IRolloutStatusAccessor";
+import { ICachedRolloutStatus } from "./ICachedRolloutStatus";
+import { IVariantInstance } from "../dtos";
 
-export class SessionStorageExperimentStatusAccessor implements IExperimentStatusAccessor {
+export class SessionStorageRolloutStatusAccessor implements IRolloutStatusAccessor {
   private readonly apiClient: ExperimentApiClient;
   private static cachedData: { userId: string, data: string } | null = null;
 
@@ -28,26 +28,26 @@ export class SessionStorageExperimentStatusAccessor implements IExperimentStatus
       })
       .then(data => {
         const encodedData = this.encode(userId, data);
-        SessionStorageExperimentStatusAccessor.cachedData = { userId, data };
+        SessionStorageRolloutStatusAccessor.cachedData = { userId, data };
         this.trySetInSessionStorage(encodedData);
       });
   }
 
-  get(): ICachedExperimentsStatus {
+  get(): ICachedRolloutStatus {
     const fallback = { user: "", experiments: [] };
 
-    if (SessionStorageExperimentStatusAccessor.cachedData) {
-      const { userId, data } = SessionStorageExperimentStatusAccessor.cachedData;
+    if (SessionStorageRolloutStatusAccessor.cachedData) {
+      const { userId, data } = SessionStorageRolloutStatusAccessor.cachedData;
       return {
         user: userId,
-        experiments: this.decode<IExperimentVariantInstance[]>(data)
+        experiments: this.decode<IVariantInstance[]>(data)
       };
     }
 
     return this.tryGetFromSessionStorage() ?? fallback;
   }
 
-  private tryGetFromSessionStorage(userId?: string): ICachedExperimentsStatus | null {
+  private tryGetFromSessionStorage(userId?: string): ICachedRolloutStatus | null {
     try {
       const storedData = window.sessionStorage?.getItem(this.experimentStatusKey);
 
@@ -68,7 +68,7 @@ export class SessionStorageExperimentStatusAccessor implements IExperimentStatus
 
       return {
         user: storedUserId,
-        experiments: this.decode<IExperimentVariantInstance[]>(parts[1])
+        experiments: this.decode<IVariantInstance[]>(parts[1])
       };
     } catch {
       // Treat as no data if someone tampered with the session storage
@@ -95,7 +95,7 @@ export class SessionStorageExperimentStatusAccessor implements IExperimentStatus
   }
 
   private hasCachedDataForUser(userId: string): boolean {
-    return !!SessionStorageExperimentStatusAccessor.cachedData &&
-      SessionStorageExperimentStatusAccessor.cachedData.userId === userId;
+    return !!SessionStorageRolloutStatusAccessor.cachedData &&
+      SessionStorageRolloutStatusAccessor.cachedData.userId === userId;
   }
 }

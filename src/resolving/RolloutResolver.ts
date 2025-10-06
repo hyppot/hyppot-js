@@ -1,15 +1,15 @@
-import { IExperimentVariantInstance } from "../dtos";
-import { IExperimentStatusAccessor } from "./IExperimentStatusAccessor";
-import { ResolvedExperiment } from "./ResolvedExperiment";
-import { IExperimentationResolver } from "./IExperimentationResolver";
-import { IExperimentTracker } from "../tracking/IExperimentTracker";
 import { HyppotConfiguration } from "../HyppotConfiguration";
+import { IRolloutTracker } from "../tracking/IExperimentTracker";
+import { IRolloutResolver } from "./IRolloutResolver";
+import { IRolloutStatusAccessor } from "./IRolloutStatusAccessor";
+import { ResolvedExperiment } from "./ResolvedExperiment";
+import { IVariantInstance } from "../dtos";
 
-export class ExperimentationResolver implements IExperimentationResolver {
+export class RolloutResolver implements IRolloutResolver {
   private currentUser: string | null = null;
   private _isReady = false;
 
-  constructor(private _statusAccessor: IExperimentStatusAccessor, private _tracker: IExperimentTracker, private _config: HyppotConfiguration) {}
+  constructor(private _statusAccessor: IRolloutStatusAccessor, private _tracker: IRolloutTracker, private _config: HyppotConfiguration) { }
 
   public get isReady(): boolean {
     return this._isReady;
@@ -21,11 +21,11 @@ export class ExperimentationResolver implements IExperimentationResolver {
     await this._statusAccessor.downloadForUser(userId)
       .then(() => {
         this._isReady = true;
-    });
+      });
   }
 
   public resolve(experimentId: string): ResolvedExperiment | null {
-    const instance = this.getAllExperiments().filter(e => e.experiment === experimentId);
+    const instance = this.getAllExperiments().filter(e => e.rollout === experimentId);
     const experiment = instance.length ? new ResolvedExperiment(instance[0]) : null;
     if (experiment && this._config.autoTrackImpressions) {
       this._tracker.trackImpression({
@@ -43,8 +43,8 @@ export class ExperimentationResolver implements IExperimentationResolver {
     return this.getAllExperiments().map(e => new ResolvedExperiment(e));
   }
 
-  private getAllExperiments(): IExperimentVariantInstance[] {
-    const {user, experiments} = this._statusAccessor.get();
+  private getAllExperiments(): IVariantInstance[] {
+    const { user, experiments } = this._statusAccessor.get();
 
     if (this.currentUser !== null && user !== this.currentUser) {
       console.log(`WARNING: cached context is for different user as accessing`);
