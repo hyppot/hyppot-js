@@ -46,6 +46,7 @@ export interface IVariantInstance
 {
 	rollout: string;
 	variant: string;
+	isActiveFeature: boolean;
 	variables: IVariableInstance[];
 }
 export interface IExperimentImpressionModel

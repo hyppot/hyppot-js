@@ -22,25 +22,30 @@ export class SessionStorageRolloutStatusAccessor implements IRolloutStatusAccess
     }
 
     return this.apiClient.getForUser(userId)
-      .catch(error => {
-        console.error('Error downloading experiments:', error);
-        return "W10="; // Return empty array in base64 as fallback
-      })
       .then(data => {
         const encodedData = this.encode(userId, data);
         SessionStorageRolloutStatusAccessor.cachedData = { userId, data };
         this.trySetInSessionStorage(encodedData);
+      })
+      .catch(error => {
+        console.error('Error downloading experiments:', error);
       });
   }
 
   get(): ICachedRolloutStatus {
-    const fallback = { user: "", experiments: [] };
+    const fallback: ICachedRolloutStatus = { user: "", experiments: [], featureToggles: [] };
 
     if (SessionStorageRolloutStatusAccessor.cachedData) {
       const { userId, data } = SessionStorageRolloutStatusAccessor.cachedData;
+      const parts = data.split('.');
+      if (parts.length < 2) {
+        return fallback;
+      }
+
       return {
         user: userId,
-        experiments: this.decode<IVariantInstance[]>(data)
+        experiments: this.decode<IVariantInstance[]>(parts[0]),
+        featureToggles: this.decode<IVariantInstance[]>(parts[1])
       };
     }
 
@@ -68,7 +73,8 @@ export class SessionStorageRolloutStatusAccessor implements IRolloutStatusAccess
 
       return {
         user: storedUserId,
-        experiments: this.decode<IVariantInstance[]>(parts[1])
+        experiments: this.decode<IVariantInstance[]>(parts[1]),
+        featureToggles: []
       };
     } catch {
       // Treat as no data if someone tampered with the session storage
@@ -91,7 +97,7 @@ export class SessionStorageRolloutStatusAccessor implements IRolloutStatusAccess
   }
 
   private encode(userId: string, data: string): string {
-    return `${btoa(userId)},${data}`;
+    return `${btoa(userId)}.${data}`;
   }
 
   private hasCachedDataForUser(userId: string): boolean {

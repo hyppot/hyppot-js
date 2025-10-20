@@ -1,12 +1,12 @@
 import { IVariantInstance } from "../dtos";
-import { IResolvedExperiment } from "./IResolvedExperiment";
+import { IResolvedVariant } from "./IResolvedVariant";
 
 
-export class ResolvedExperiment implements IResolvedExperiment {
+export class ResolvedExperiment implements IResolvedVariant {
   constructor(private result: IVariantInstance) {
   }
 
-  get experiment(): string {
+  get rollout(): string {
     return this.result.rollout;
   }
 

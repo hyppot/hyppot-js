@@ -1,30 +1,34 @@
-import { IExperimentDefinition, IExperimentVariantInstance } from "./dtos";
+import { IExperimentDefinition, IVariantInstance } from "./dtos";
 import { HyppotConfiguration } from "./HyppotConfiguration";
-import { ExperimentationResolver } from "./resolving/ExperimentationResolver";
-import { IExperimentationResolver } from "./resolving/IExperimentationResolver";
-import { IExperimentStatusAccessor } from "./resolving/IExperimentStatusAccessor";
-import { IResolvedExperiment } from "./resolving/IResolvedExperiment";
-import { SessionStorageExperimentStatusAccessor } from "./resolving/SessionStorageExperimentStatusAccessor";
-import { ExperimentTracker } from "./tracking/ExperimentTracker";
-import { IExperimentTracker } from "./tracking/IExperimentTracker";
+import { RolloutResolver } from "./resolving/RolloutResolver";
+import { IRolloutResolver } from "./resolving/IRolloutResolver";
+import { IRolloutStatusAccessor } from "./resolving/IRolloutStatusAccessor";
+import { IResolvedVariant } from "./resolving/IResolvedVariant";
+import { SessionStorageRolloutStatusAccessor } from "./resolving/SessionStorageRolloutStatusAccessor";
+import { RolloutTracker } from "./tracking/ExperimentTracker";
+import { IRolloutTracker } from "./tracking/IExperimentTracker";
 import { TrackingApiClient } from "./tracking/TrackingApiClient";
-export function configureHyppot(configure: (config: HyppotConfiguration) => void): { resolver: IExperimentationResolver, tracker: IExperimentTracker } {
+export function configureHyppot(configure: (config: HyppotConfiguration) => void): { resolver: IRolloutResolver, tracker: IRolloutTracker } {
   const config = new HyppotConfiguration();
   configure(config);
-  const tracker = new ExperimentTracker(new TrackingApiClient(config.prefix));
+  var baseUrl = new URL(config.baseUrl + config.prefix).toString();
+  const tracker = new RolloutTracker(new TrackingApiClient(baseUrl));
   return {
-    resolver: new ExperimentationResolver(new SessionStorageExperimentStatusAccessor(config.prefix, config.experimentStatusKey), tracker, config),
+    resolver: new RolloutResolver(new SessionStorageRolloutStatusAccessor(baseUrl, config.experimentStatusKey), tracker, config),
     tracker: tracker
   };
 }
 
 export {
-  ExperimentationResolver,
-  IExperimentStatusAccessor,
+  RolloutResolver,
+  HyppotConfiguration
+};
+
+export type {
+  IRolloutStatusAccessor,
   IExperimentDefinition,
-  IExperimentVariantInstance,
-  IResolvedExperiment,
-  IExperimentationResolver,
-  HyppotConfiguration,
-  IExperimentTracker
+  IVariantInstance,
+  IResolvedVariant,
+  IRolloutResolver,
+  IRolloutTracker
 };

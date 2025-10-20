@@ -24,8 +24,8 @@ export class RolloutResolver implements IRolloutResolver {
       });
   }
 
-  public resolve(experimentId: string): ResolvedExperiment | null {
-    const instance = this.getAllExperiments().filter(e => e.rollout === experimentId);
+  public resolveExperiment(experimentId: string): ResolvedExperiment | null {
+    const instance = this.getAllExperiments().filter((e: IVariantInstance) => e.rollout === experimentId);
     const experiment = instance.length ? new ResolvedExperiment(instance[0]) : null;
     if (experiment && this._config.autoTrackImpressions) {
       this._tracker.trackImpression({
@@ -36,6 +36,11 @@ export class RolloutResolver implements IRolloutResolver {
       });
     }
     return experiment;
+  }
+
+  public resolveFeatureToggle(featureToggleId: string): ResolvedExperiment | null {
+    const instance = this.getAllFeatureToggles().filter((e: IVariantInstance) => e.rollout === featureToggleId);
+    return instance.length ? new ResolvedExperiment(instance[0]) : null;
   }
 
   // todo: remove method. or document at least that this will not track impressions
@@ -52,5 +57,16 @@ export class RolloutResolver implements IRolloutResolver {
     }
 
     return experiments;
+  }
+
+  private getAllFeatureToggles(): IVariantInstance[] {
+    const { user, featureToggles } = this._statusAccessor.get();
+
+    if (this.currentUser !== null && user !== this.currentUser) {
+      console.log(`WARNING: cached context is for different user as accessing`);
+      this.initialize(this.currentUser);
+    }
+
+    return featureToggles;
   }
 }

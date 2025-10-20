@@ -1,8 +1,8 @@
-import { IResolvedExperiment } from "./IResolvedExperiment";
+import { IResolvedVariant } from "./IResolvedVariant";
 
 export interface IRolloutResolver {
   initialize(userId: string): Promise<void>;
-  resolve(experimentId: string): IResolvedExperiment | null;
-  resolveAll(): IResolvedExperiment[];
+  resolveExperiment(experimentId: string): IResolvedVariant | null;
+  resolveFeatureToggle(featureToggleId: string): IResolvedVariant | null;
   readonly isReady: boolean;
 }
