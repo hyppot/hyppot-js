@@ -1,8 +1,8 @@
 import { IVariantInstance } from "../dtos";
+import { HyppotConstants } from "../HyppotConstants";
 import { IResolvedVariant } from "./IResolvedVariant";
 
-
-export class ResolvedExperiment implements IResolvedVariant {
+export class ResolvedVariant implements IResolvedVariant {
   constructor(private result: IVariantInstance) {
   }
 
@@ -26,5 +26,9 @@ export class ResolvedExperiment implements IResolvedVariant {
     }
 
     throw new Error(`Variable ${name} is neither a string, number, boolean, nor null`);
+  }
+
+  get isEnabled(): boolean {
+    return this.result.variant !== HyppotConstants.FeatureToggleOffVariant;
   }
 }

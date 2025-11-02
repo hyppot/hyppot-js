@@ -1,6 +1,6 @@
 {
   "name": "hyppot-browser",
-  "version": "0.2.50",
+  "version": "0.2.56",
   "description": "Hyppot SDK in Javascript/Typescript",
   "author": "Hyppot (https://hyppot.com)",
   "license": "Apache-2.0",
