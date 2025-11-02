@@ -2,7 +2,7 @@ import { HyppotConfiguration } from "../HyppotConfiguration";
 import { IRolloutTracker } from "../tracking/IExperimentTracker";
 import { IRolloutResolver } from "./IRolloutResolver";
 import { IRolloutStatusAccessor } from "./IRolloutStatusAccessor";
-import { ResolvedExperiment } from "./ResolvedExperiment";
+import { ResolvedVariant } from "./ResolvedVariant";
 import { IVariantInstance } from "../dtos";
 
 export class RolloutResolver implements IRolloutResolver {
@@ -24,9 +24,9 @@ export class RolloutResolver implements IRolloutResolver {
       });
   }
 
-  public resolveExperiment(experimentId: string): ResolvedExperiment | null {
+  public resolveExperiment(experimentId: string): ResolvedVariant | null {
     const instance = this.getAllExperiments().filter((e: IVariantInstance) => e.rollout === experimentId);
-    const experiment = instance.length ? new ResolvedExperiment(instance[0]) : null;
+    const experiment = instance.length ? new ResolvedVariant(instance[0]) : null;
     if (experiment && this._config.autoTrackImpressions) {
       this._tracker.trackImpression({
         experiment: experimentId,
@@ -38,14 +38,14 @@ export class RolloutResolver implements IRolloutResolver {
     return experiment;
   }
 
-  public resolveFeatureToggle(featureToggleId: string): ResolvedExperiment | null {
+  public resolveFeatureToggle(featureToggleId: string): ResolvedVariant | null {
     const instance = this.getAllFeatureToggles().filter((e: IVariantInstance) => e.rollout === featureToggleId);
-    return instance.length ? new ResolvedExperiment(instance[0]) : null;
+    return instance.length ? new ResolvedVariant(instance[0]) : null;
   }
 
   // todo: remove method. or document at least that this will not track impressions
-  public resolveAll(): ResolvedExperiment[] {
-    return this.getAllExperiments().map(e => new ResolvedExperiment(e));
+  public resolveAll(): ResolvedVariant[] {
+    return this.getAllExperiments().map(v => new ResolvedVariant(v));
   }
 
   private getAllExperiments(): IVariantInstance[] {
