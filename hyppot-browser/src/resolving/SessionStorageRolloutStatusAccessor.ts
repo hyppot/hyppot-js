@@ -1,7 +1,7 @@
 import { ExperimentApiClient } from "./ExperimentApiClient";
 import { IRolloutStatusAccessor } from "./IRolloutStatusAccessor";
 import { ICachedRolloutStatus } from "./ICachedRolloutStatus";
-import { IVariantInstance } from "../dtos";
+import type { IVariantInstance } from "@hyppot/types";
 
 export class SessionStorageRolloutStatusAccessor implements IRolloutStatusAccessor {
   private readonly apiClient: ExperimentApiClient;

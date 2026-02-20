@@ -8,9 +8,6 @@ build
 dist
 .rpt2_cache
 
-# generated from C# (Reinforced.Typings)
-**/dtos.ts
-
 # misc
 .DS_Store
 .env

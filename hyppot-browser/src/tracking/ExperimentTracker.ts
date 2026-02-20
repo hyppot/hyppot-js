@@ -1,4 +1,4 @@
-import { IExperimentImpressionModel, IExperimentConversionModel } from "../dtos";
+import type { IExperimentImpressionModel, IExperimentConversionModel } from "@hyppot/types";
 import { IRolloutTracker } from "./IExperimentTracker";
 import { TrackingApiClient } from "./TrackingApiClient";
 

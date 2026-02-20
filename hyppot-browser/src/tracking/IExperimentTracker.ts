@@ -1,4 +1,4 @@
-import { IExperimentConversionModel, IExperimentImpressionModel } from "../dtos";
+import type { IExperimentConversionModel, IExperimentImpressionModel } from "@hyppot/types";
 
 export interface IRolloutTracker {
   trackImpression(impression: IExperimentImpressionModel): Promise<void>;

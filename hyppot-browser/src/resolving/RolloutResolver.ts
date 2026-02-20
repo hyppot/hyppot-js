@@ -3,7 +3,7 @@ import { IRolloutTracker } from "../tracking/IExperimentTracker";
 import { IRolloutResolver } from "./IRolloutResolver";
 import { IRolloutStatusAccessor } from "./IRolloutStatusAccessor";
 import { ResolvedVariant } from "./ResolvedVariant";
-import { IVariantInstance } from "../dtos";
+import type { IVariantInstance } from "@hyppot/types";
 
 export class RolloutResolver implements IRolloutResolver {
   private currentUser: string | null = null;

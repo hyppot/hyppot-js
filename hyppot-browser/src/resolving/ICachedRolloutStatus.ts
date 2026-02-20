@@ -1,4 +1,4 @@
-import { IVariantInstance } from "../dtos";
+import type { IVariantInstance } from "@hyppot/types";
 
 export interface ICachedRolloutStatus {
   experiments: IVariantInstance[];

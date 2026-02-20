@@ -1,4 +1,4 @@
-import { IVariantInstance } from "../dtos";
+import type { IVariantInstance } from "@hyppot/types";
 import { HyppotConstants } from "../HyppotConstants";
 import { IResolvedVariant } from "./IResolvedVariant";
 

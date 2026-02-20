@@ -1,4 +1,4 @@
-import { IExperimentDefinition, IVariantInstance } from "./dtos";
+import type { IExperimentDefinition, IVariantInstance } from "@hyppot/types";
 import { HyppotConfiguration } from "./HyppotConfiguration";
 import { RolloutResolver } from "./resolving/RolloutResolver";
 import { IRolloutResolver } from "./resolving/IRolloutResolver";

@@ -1,5 +1,5 @@
 import { ApiClientBase } from "../api/ApiClientBase";
-import { IExperimentConversionModel, IExperimentImpressionModel } from "../dtos";
+import type { IExperimentConversionModel, IExperimentImpressionModel } from "@hyppot/types";
 
 export class TrackingApiClient extends ApiClientBase {
     constructor(baseUrl: string) {
