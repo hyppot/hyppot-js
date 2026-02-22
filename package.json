@@ -4,11 +4,11 @@
   "description": "Hyppot JavaScript SDKs monorepo",
   "private": true,
   "workspaces": [
-    "hyppot-browser",
-    "hyppot-types"
+    "hyppot-types",
+    "hyppot-browser"
   ],
   "scripts": {
-    "build": "npm run build -ws",
+    "build": "npm run build -w hyppot-types && npm run build -w hyppot-browser",
     "clean": "npm run clean -ws --if-present",
     "dev": "npm run dev -w hyppot-browser",
     "lint": "npm run lint -ws --if-present"
